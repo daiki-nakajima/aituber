@@ -1,10 +1,13 @@
-import openai
+import os 
 import dotenv
-import os
+from openai import OpenAI
 
 dotenv.load_dotenv()
-openai.organization = os.environ.get("OPENAI_ORGANIZATION")
-openai.api_key = os.environ.get("OPENAI_API_KEY")
+
+client = OpenAI(
+    api_key=os.environ.get("OPENAI_API_KEY"),
+    organization = os.environ.get("OPENAI_ORGANIZATION")
+)
 
 messages = [
     {
@@ -17,9 +20,9 @@ messages = [
     }
 ]
 
-res = openai.ChatCompletion.create(
+res = client.chat.completions.create(
     model="gpt-3.5-turbo",
-    messages=messages,
+    messages=messages
 )
 
-print(res["choices"][0]["message"]["content"])
+print(res.choices[0].message.content)
